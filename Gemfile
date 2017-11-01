@@ -3,6 +3,15 @@
 source 'https://rubygems.org'
 ruby '2.4.1'
 
+# Use delayed job for running background jobs
+gem 'delayed_job_active_record'
+
+# Need daemons to start delayed_job
+gem 'daemons'
+
+# Use Twilio
+gem 'twilio-ruby', '5.0.0'
+
 gem 'active_model_serializers', '~> 0.10.6'
 gem 'bcrypt', '~> 3.1.11'
 gem 'pg'
