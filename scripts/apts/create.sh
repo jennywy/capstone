@@ -11,9 +11,10 @@ curl "${API}${URL_PATH}" \
     "appointment": {
       "name": "'"${NAME}"'",
       "phone_number": "'"${NUMBER}"'",
-      "time": "'"${TIME}"'"
+      "time": "'"${TIME}"'",
+      "reminder": "'"${REMINDER}"'"
     }
   }'
 
 echo
-# TOKEN=BAhJIiVmYjBhZmZiMDAxODc3OWNhZGVhODFlZmZhMTU1MGI4OQY6BkVG--f1cd54c9c30cb8bc90dc6312d3e3678339d23999 NAME="TEST" NUMBER="1" TIME="2017-01-01 12:00:00"
+# TOKEN=BAhJIiU5YjljZTMwYzE5ZTVmNDAyOTQyZWY1NTg2MWZiNDM0ZQY6BkVG--397ebaddb94d0e8a6e9d22bd5c81fe87c8b18b51 NAME="TEST" NUMBER="1" TIME="2017-01-01 12:00:00" REMINDER="reminder" sh scripts/apts/create.sh

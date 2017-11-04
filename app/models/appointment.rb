@@ -5,10 +5,10 @@ class Appointment < ApplicationRecord
   belongs_to :user
 
   after_create do
-    reminder('body')
+    twilio_reminder(self.reminder)
   end
 
-  def reminder(body)
+  def twilio_reminder(body)
     @twilio_number = ENV['TWILIO_NUMBER']
     account_sid = ENV['TWILIO_ACCOUNT_SID']
     @client = Twilio::REST::Client.new account_sid, ENV['TWILIO_AUTH_TOKEN']

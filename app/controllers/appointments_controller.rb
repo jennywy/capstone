@@ -134,7 +134,7 @@ class AppointmentsController < ProtectedController
   end
 
   def appointment_params
-    params.require(:appointment).permit(:name, :phone_number, :time, :time_zone)
+    params.require(:appointment).permit(:name, :phone_number, :time, :reminder)
   end
 
   private :set_appointment, :appointment_params
