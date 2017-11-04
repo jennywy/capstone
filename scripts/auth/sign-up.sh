@@ -15,3 +15,4 @@ curl "${API}${URL_PATH}" \
   }'
 
 echo
+#EMAIL=jwy PASSWORD=jwy

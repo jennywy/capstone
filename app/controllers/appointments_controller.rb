@@ -1,58 +1,123 @@
-class AppointmentsController < ApplicationController
-  before_action :find_appointment, only: [:show, :edit, :update, :destroy]
+# class AppointmentsController < ApplicationController
+#   before_action :find_appointment, only: [:show, :edit, :update, :destroy]
+#
+#   # GET /appointments
+#   # GET /appointments.json
+#   def index
+#     @appointments = Appointment.all
+#     # if @appointments.length.zero?
+#     #   flash[:alert] = 'You have no appointments. Create one now to get started.'
+#     # end
+#   end
+#
+#   # GET /appointments/1
+#   # GET /appointments/1.json
+#   def show
+#   end
+#
+#   # GET /appointments/new
+#   def new
+#     @appointment = Appointment.new
+#     @min_date = DateTime.now
+#   end
+#
+#   # GET /appointments/1/edit
+#   def edit
+#   end
+#
+#   # POST /appointments
+#   # POST /appointments.json
+#   def create
+#     Time.zone = appointment_params[:time_zone]
+#     @appointment = Appointment.new(appointment_params)
+#
+#     respond_to do |format|
+#       if @appointment.save
+#         format.html { redirect_to @appointment, notice: 'Appointment was successfully created.' }
+#         format.json { render :show, status: :created, location: @appointment }
+#       else
+#         format.html { render :new }
+#         format.json { render json: @appointment.errors, status: :unprocessable_entity }
+#       end
+#     end
+#   end
+#
+#   # PATCH/PUT /appointments/1
+#   # PATCH/PUT /appointments/1.json
+#   def update
+#     respond_to do |format|
+#       if @appointment.update(appointment_params)
+#         format.html { redirect_to @appointment, notice: 'Appointment was successfully updated.' }
+#         format.json { render :show, status: :ok, location: @appointment }
+#       else
+#         format.html { render :edit }
+#         format.json { render json: @appointment.errors, status: :unprocessable_entity }
+#       end
+#     end
+#   end
+#
+#   # DELETE /appointments/1
+#   # DELETE /appointments/1.json
+#   def destroy
+#     @appointment.destroy
+#     respond_to do |format|
+#       format.html { redirect_to appointments_url, notice: 'Appointment was successfully destroyed.' }
+#       format.json { head :no_content }
+#     end
+#   end
+#
+#   private
+#   # Use callbacks to share common setup or constraints between actions.
+#   # See above ---> before_action :set_appointment, only: [:show, :edit, :update, :destroy]
+#   def find_appointment
+#     @appointment = Appointment.find(params[:id])
+#   end
+#
+#   # Never trust parameters from the scary internet, only allow the white list through.
+#   def appointment_params
+#     params.require(:appointment).permit(:name, :phone_number, :time, :time_zone)
+#   end
+# end
+
+# frozen_string_literal: true
+
+class AppointmentsController < ProtectedController
+  before_action :set_appointment, only: %i[update destroy]
 
   # GET /appointments
   # GET /appointments.json
   def index
-    @appointments = Appointment.all
-    # if @appointments.length.zero?
-    #   flash[:alert] = 'You have no appointments. Create one now to get started.'
-    # end
+    @appointments = current_user.appointments.all
+
+    render json: @appointments
   end
 
   # GET /appointments/1
   # GET /appointments/1.json
   def show
-  end
-
-  # GET /appointments/new
-  def new
-    @appointment = Appointment.new
-    @min_date = DateTime.now
-  end
-
-  # GET /appointments/1/edit
-  def edit
+    render json: Appointment.find(params[:id])
   end
 
   # POST /appointments
   # POST /appointments.json
   def create
     Time.zone = appointment_params[:time_zone]
-    @appointment = Appointment.new(appointment_params)
+    @appointment = current_user.appointments.build(appointment_params)
 
-    respond_to do |format|
-      if @appointment.save
-        format.html { redirect_to @appointment, notice: 'Appointment was successfully created.' }
-        format.json { render :show, status: :created, location: @appointment }
-      else
-        format.html { render :new }
-        format.json { render json: @appointment.errors, status: :unprocessable_entity }
-      end
+    if @appointment.save
+      render json: @appointment, status: :created
+    else
+      render json: @appointment.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /appointments/1
   # PATCH/PUT /appointments/1.json
   def update
-    respond_to do |format|
-      if @appointment.update(appointment_params)
-        format.html { redirect_to @appointment, notice: 'Appointment was successfully updated.' }
-        format.json { render :show, status: :ok, location: @appointment }
-      else
-        format.html { render :edit }
-        format.json { render json: @appointment.errors, status: :unprocessable_entity }
-      end
+    if @appointment.update(appointment_params)
+      head :no_content
+    else
+      render json: @appointment.errors, status: :unprocessable_entity
     end
   end
 
@@ -60,21 +125,17 @@ class AppointmentsController < ApplicationController
   # DELETE /appointments/1.json
   def destroy
     @appointment.destroy
-    respond_to do |format|
-      format.html { redirect_to appointments_url, notice: 'Appointment was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+
+    head :no_content
   end
 
-  private
-  # Use callbacks to share common setup or constraints between actions.
-  # See above ---> before_action :set_appointment, only: [:show, :edit, :update, :destroy]
-  def find_appointment
-    @appointment = Appointment.find(params[:id])
+  def set_appointment
+    @appointment = current_user.appointments.find(params[:id])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def appointment_params
     params.require(:appointment).permit(:name, :phone_number, :time, :time_zone)
   end
+
+  private :set_appointment, :appointment_params
 end
