@@ -1,3 +1,4 @@
+
 class Appointment < ApplicationRecord
   validates :name, presence: true
   validates :phone_number, presence: true
@@ -5,7 +6,7 @@ class Appointment < ApplicationRecord
   belongs_to :user
 
   after_create do
-    twilio_reminder(self.reminder)
+    delay.twilio_reminder(self.reminder)
   end
 
   def twilio_reminder(body)
@@ -20,11 +21,10 @@ class Appointment < ApplicationRecord
     )
   end
 
-  # def when_to_run
-  #   minutes_before_appointment = 1.minutes
-  #   time - minutes_before_appointment
-  # end
+  def when_to_run
+    minutes_before_appointment = 1.minutes
+    time - minutes_before_appointment
+  end
 
-  # handle_asynchronously :reminder, :run_at => Proc.new { |i| i.when_to_run }
-# end
+  handle_asynchronously :twilio_reminder, :run_at => Proc.new { |i| i.when_to_run }
 end
