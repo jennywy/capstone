@@ -1,28 +1,36 @@
-Capstone Project
+Capstone Project - Back End 
 
-## Tasks
+## Summary
+"Call me, baby" is an appointment reminder SPA that uses a Rails API that integrates with Twilio to send SMS a set interval before a user's schedule appointment. This capstone project is adapted from Twilio's appointment reminder project found here: ((https://www.twilio.com/docs/tutorials/appointment-reminders-ruby-rails)). I adapted it to send a custom message set by the client instead of the hardcoded message reminder.
+The user creates a message on the front end, and using the rails active record callback, after_create, the Twilio SMS request is constructed and sent to Twilio.
+Using an Active Jobs Queue adapter, delayed_job, we're able to call the method handle_asynchronously which allows for a delayed firing of the SMS message to a chosen time.
+CMB requires users to be authenticated in order to use the site and CRUD appointments. Alas, the poor author is on a Twilio free trial account meaning messages can only be sent to the author's cell phone so it doesn't matter.
 
-Developers should run these often!
+## ERD
+((https://i.imgur.com/xp7V4Zu.png))
 
--   `bin/rake routes` lists the endpoints available in your API.
--   `bin/rake test` runs automated tests.
--   `bin/rails console` opens a REPL that pre-loads the API.
--   `bin/rails db` opens your database client and loads the correct database.
--   `bin/rails server` starts the API.
--   `scripts/*.sh` run various `curl` commands to test the API. See below.
+## Unsolved Back End Problems
+- Updating and deleting an appointment message body or time does not currently ping Twilio to update or delete that SMS. Twilio does support PUT and DELETE requests with their API, and needs the take the argument of the Twilio generated message ID (SID) in order to complete the request.
+- At the moment the appointment reminder time is hardcoded to be 1 minute before the appointment (for the purposes of demoing, but realistically should be like an hour before). I'd like to impliment a feature that allows the user to choose how early they'd like to be reminded - an hour before, 30 minutes before, etc...
+- The Time Zone is hard coded to EST in the config file and doesn't dynamically take the users time zone. I'm not totally sure how to test that since it's only texting me and I am only ever on the (B)East Coast and couldn't totally understand the ActiveSupport documentation for time zones, but it was better than pinging to me in Zulu/GMT time.
 
-<!-- TODO -   `rake nag` checks your code style. -->
-<!-- TODO -   `rake lint` checks your code for syntax errors. -->
+## Technologies Used
+- Rails API
+- Twilio API
+- twilio gem
+- delayed_job Active Job Queue Adapter
+- daemons to start delayed_job
+- Heroku
 
 ## API
 
-Use this as the basis for your own API documentation. Add a new third-level
-heading for your custom entities, and follow the pattern provided for the
-built-in user authentication documentation.
-
-Scripts are included in [`scripts`](scripts) to test built-in actions. Add your
-own scripts to test your custom API. As an alternative, you can write automated
-tests in RSpec to test your API.
+| Verb   | URI Pattern         | Controller#Action        |
+|:-------|:--------------------|:-------------------------|
+| GET    | `/appointments`     | `appointments#index`     |
+| GET    | `/appointments/:id` | `appointments#show`      |
+| POST   | `/appointments`     | `appointments#create`    |
+| PATCH  | `/appointments/:id` | `appointments#update`    |
+| DELETE | `/appointments/:id` | `appointments#destroy`   |
 
 ### Authentication
 
@@ -220,27 +228,3 @@ Content-Type: application/json; charset=utf-8
   }
 }
 ```
-
-### Reset Database without dropping
-
-This is not a task developers should run often, but it is sometimes necessary.
-
-**locally**
-
-```sh
-bin/rake db:migrate VERSION=0
-bin/rake db:migrate db:seed db:examples
-```
-
-**heroku**
-
-```sh
-heroku run rake db:migrate VERSION=0
-heroku run rake db:migrate db:seed db:examples
-```
-
-## [License](LICENSE)
-
-1.  All content is licensed under a CC­BY­NC­SA 4.0 license.
-1.  All software code is licensed under GNU GPLv3. For commercial use or
-    alternative licensing, please contact legal@ga.co.

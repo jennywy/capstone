@@ -13,7 +13,7 @@ class Appointment < ApplicationRecord
     @twilio_number = ENV['TWILIO_NUMBER']
     account_sid = ENV['TWILIO_ACCOUNT_SID']
     @client = Twilio::REST::Client.new account_sid, ENV['TWILIO_AUTH_TOKEN']
-    time_str = ((self.time).localtime).strftime("%I:%M%p on %b. %d, %Y")
+    # time_str = ((self.time).localtime).strftime("%I:%M%p on %b. %d, %Y")
     message = @client.api.account.messages.create(
       :from => @twilio_number,
       :to => self.phone_number,
