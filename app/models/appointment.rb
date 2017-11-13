@@ -22,7 +22,7 @@ class Appointment < ApplicationRecord
   end
 
   def when_to_run
-    minutes_before_appointment = 1.minutes
+    minutes_before_appointment = 30.minutes
     time - minutes_before_appointment
   end
 
