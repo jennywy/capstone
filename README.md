@@ -1,7 +1,7 @@
 <h1>Call Me, Baby - WDI Full Stack Capstone Project - Back End Repo </h1>
 
 ## Summary
-"Call me, baby" is an appointment reminder single page application that uses a Rails API that integrates with Twilio to send SMS a set interval before a user's schedule appointment. This capstone project is adapted from Twilio's appointment reminder project found here: ((https://www.twilio.com/docs/tutorials/appointment-reminders-ruby-rails)). I adapted it to send a custom message set by the client instead of the static message reminder as in their example.
+"Call me, baby" is an appointment reminder single page application that uses a Rails API that integrates with Twilio to send SMS a set interval before a user's schedule appointment. This capstone project is adapted from Twilio's appointment reminder project found [here](https://www.twilio.com/docs/tutorials/appointment-reminders-ruby-rails). I adapted it to send a custom message set by the client instead of the static message reminder as in their example that the client enters in forms on the front end.
 
 The user creates a message on the front end, and using the Rails Active Record Callback, after_create, the Twilio SMS request is constructed and sent to Twilio.
 
@@ -21,7 +21,20 @@ https://github.com/jennywy/callmebby
 https://jennywy.github.io/callmebby/
 
 ## ERD
-[Entity Relationship Diagram](https://i.imgur.com/xp7V4Zu.png)
+![Entity Relationship Diagram](https://i.imgur.com/xp7V4Zu.png)
+
+## Wireframe
+![Wireframe](https://i.imgur.com/aJX5mSK.png)
+
+## Project
+![Call Me Baby](https://i.imgur.com/o6aMh3r.png)
+
+## User Stories
+- As a user I want to set an appointment with an appointment name so I know what appointments I have
+- As a user I want to set an appointment with an appointment time so I can make my appointment on time
+- As a user I want to enter a phone number so I can receive SMS alerts to be reminded about my appointment
+- As a user I want to be sent an SMS to my phone number to be reminded about my appointment 30 minutes before my appointments
+- As a user I want to set a custom SMS to be reminded with specific details about my appointment
 
 ## Planning Process
 I wanted take on challenges in areas I knew I was weak in, namely reading documentation and being able to articulate my problems to troubleshoot issues. I wanted to solve my own problems as much as possible and choose a project that was somewhat outside the scope of the course, but not impossible to do. I was really ill with pneumonia and unfortunately lost a lot of time on this project so I didn't get as far as I wanted to, but I'm pretty happy with how far I got on the back-end and learned a lot about myself as a developer.
@@ -36,6 +49,12 @@ Overall it was an incredible journey of self-discovery. I felt obliged to read e
 
 I've also learned that I really enjoy back-end development more than front-end. The more I read about Active Record, the more it sparked my curiosity and inspired a desire to learn and experiment with Active Record callbacks to see how else they can be used.
 
+I had pneumonia and spent most of my time working on my back end that I had neglected the front end! I really wanted to do this project in Ember, but I didn't feel confident with the framework after a week of mostly self-directed learning while I was ill on top of doing a kind of tricky third party API integration with Active Jobs so I scrapped the idea and used the browser template that GA built for us kind of as a crutch.
+
+I identified lots of ways I want to grow in the future:
+- I definitely have learned to appreciate the Agile development process to making sure I'm on time, working on the right things at the right time, and not spending too much time on the wrong things because I did everything wrong for this capstone project!
+- Planning and design are not at all my strong suits and I'd like to grow in these areas very much! I don't have good intuition for how to come up with a great layout for a website that does X, Y, and Z and how to represent that data in the most inuitive, and aesthetically pleasing way, but I want to learn how to plan better and make good wireframes, and make my websites look like my wireframes!
+- My commit history is a mess! I definitely worked on the master branch too often and not on a feature to development to master like I should have.
 
 ## Unsolved Back End Problems
 - Updating and deleting an appointment message body or time does not currently ping Twilio to update or delete that SMS. Twilio does support PUT and DELETE requests with their API, and needs the take the argument of the Twilio generated message ID (SID) in order to complete the request. I'm not yet sure when the SID generates if I'm able to capture it to update it with the way it goes to the job queue to fire after_create, and it will require reading a little more documentation experimentation to see if it is possible.
@@ -88,7 +107,7 @@ curl http://localhost:4741/sign-up \
 ```
 
 ```sh
-EMAIL=foo@foo.com PASSWORD=baz scripts/sign-up.sh
+EMAIL=ava@bob.com PASSWORD=hannah scripts/sign-up.sh
 ```
 
 Response:
