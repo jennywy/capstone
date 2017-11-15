@@ -6,7 +6,7 @@ class AppointmentsController < ProtectedController
   # GET /appointments
   # GET /appointments.json
   def index
-    @appointments = current_user.appointments.all
+    @appointments = current_user.appointments.all.order('time DESC')
 
     render json: @appointments
   end
